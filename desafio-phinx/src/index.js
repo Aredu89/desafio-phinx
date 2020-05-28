@@ -1,13 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Root from './Root.js'
 import './index.css';
-import App from './App';
+import App from './component/App';
 import * as serviceWorker from './serviceWorker';
 
+const RoutedApp = () => {
+  return(
+    <Router>
+      {
+        Root.map(root=>{
+          return <Route path={root.path} component={root.Component}/>
+        })
+      }
+    </Router>
+  )
+}
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <RoutedApp />,
   document.getElementById('root')
 );
 
