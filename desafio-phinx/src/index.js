@@ -9,8 +9,8 @@ const RoutedApp = () => {
   return(
     <Router>
       {
-        Root.map(root=>{
-          return <Route path={root.path} component={root.Component}/>
+        Root.map((root, i)=>{
+          return <Route key={i} path={root.path} component={root.Component}/>
         })
       }
     </Router>
