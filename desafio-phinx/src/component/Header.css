@@ -1,0 +1,15 @@
+.header{
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 60px;
+  border: 2px solid #E5E5E5;
+}
+.header .marvel-icon img{
+  width: 100%;
+}
+.header .icon-container{
+  border-right: 2px solid #E5E5E5;
+}
+.header .input-container{
+  border-right: 2px solid #E5E5E5;
+}

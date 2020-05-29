@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Root from './Root.js'
 import './index.css';
-import App from './component/App';
 import * as serviceWorker from './serviceWorker';
 
 const RoutedApp = () => {
