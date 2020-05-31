@@ -1,3 +1,23 @@
-.App {
-  
+/* Modal */
+.modal-custom{
+  padding: 0px;
+  width: 400px;
+  border-radius: 4px;
+}
+@media (max-width: 450px){
+  .modal-custom{
+    padding: 0px;
+    width: 300px;
+    border-radius: 4px;
+  }
+}
+@media (max-width: 350px){
+  .modal-custom{
+    padding: 0px;
+    width: 200px;
+    border-radius: 4px;
+  }
+}
+.modal-custom-button:focus{
+  outline: none;
 }

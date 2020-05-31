@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { Modal } from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
 
 //Componentes
 import Header from './Header.js'
 import Lista from './Lista.js'
+import ComicsModal from './ComicsModal.js'
 
 //Hooks para obtener datos
 const useDataMarvel = (history) => {
@@ -26,7 +29,13 @@ const useDataMarvel = (history) => {
       const search = new URLSearchParams(history.location.search)
       const filtroName = search.get('character')
       if(filtroName){
-        query = query + `&nameStartsWith=%${filtroName}`
+        //Reemplazo los espacios con %
+        const arraySplit = filtroName.split(' ')
+        let nuevoFiltro = ''
+        arraySplit.forEach(word=>{
+          nuevoFiltro = nuevoFiltro + word + "%"
+        })
+        query = query + `&nameStartsWith=%${nuevoFiltro}`
       }
       try{
         const response = await fetch(`http://gateway.marvel.com/v1/public/characters${apiKey}${query}&limit=40&orderBy=modified`, options)
@@ -49,6 +58,7 @@ const useDataMarvel = (history) => {
 const App = props => {
   const [nameFilter, setNameFilter] = useState('')
   const [{ data, isLoading, isError }] = useDataMarvel(props.history)
+  const [selectedCharacter, setSelectedCharacter] = useState({})
 
   //Asigno un character en queryString aleatoreamente
   useEffect(()=>{
@@ -57,12 +67,12 @@ const App = props => {
     if(data.length > 0){
       if(!filtroName){
         const index = Math.floor(Math.random() * data.length)
-        const name = data[index].name.split(' ')
-        props.history.push(props.history.location.pathname + `?character=${name[0]}`)
+        props.history.push(props.history.location.pathname + `?character=${data[index].name}`)
       }
     }
   },[
-    data
+    data,
+    props.history
   ])
 
   const handleOnFilterEnter = event => {
@@ -73,6 +83,19 @@ const App = props => {
 
   const handleOnFilterChange = event => {
     setNameFilter(event.target.value)
+  }
+
+  //Click en el personaje de una card
+  const selectCharacter = (id, name, URI) => {
+    setSelectedCharacter({
+      id,
+      name,
+      URI
+    })
+  }
+
+  const onCloseModal = () => {
+    setSelectedCharacter({})
   }
 
   return (
@@ -86,7 +109,20 @@ const App = props => {
         data={data}
         isLoading={isLoading}
         isError={isError}
+        selectCharacter={selectCharacter}
         />
+      {/* Modal de comics */}
+      <Modal
+        classNames={{modal: ['modal-custom'], closeButton: ['modal-custom-button']}}
+        onClose={()=>onCloseModal()}
+        showCloseIcon={true}
+        open={selectedCharacter.id ? true : false}
+        center
+        >
+          <ComicsModal
+            selectedCharacter={selectedCharacter}
+            />
+      </Modal>
     </div>
   );
 }
