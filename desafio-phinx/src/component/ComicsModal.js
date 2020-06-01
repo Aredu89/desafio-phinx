@@ -3,13 +3,14 @@ import './ComicsModal.css';
 
 //Imagenes
 import StarBorderGrey from '../images/icons/star_outline_grey.svg'
+import StarGrey from '../images/icons/star_grey.svg'
 
 //Componentes
 import Spinner from './common/Spinner.js';
 import Error from './common/Error.js';
 
 //Hooks para obtener datos
-const useComics = (URI) => {
+const useComics = (URI, history) => {
   const [comics, setComics] = useState([])
   const [comicsLoading, setComicsLoading] = useState(false)
   const [comicsError, setComicsError] = useState(false)
@@ -25,8 +26,21 @@ const useComics = (URI) => {
         }
       }
       const apiKey = "?ts=1&apikey=559d5acc5e36c6f7495c9ef2fbf86fda"
+      let query = ''
+      const search = new URLSearchParams(history.location.search)
+      const filtroComic = search.get('comic')
+      console.log("Filtro comic: ",filtroComic)
+      if(filtroComic){
+        //Reemplazo los espacios con %
+        const arraySplit = filtroComic.split(' ')
+        let nuevoFiltro = ''
+        arraySplit.forEach(word=>{
+          nuevoFiltro = nuevoFiltro + word + "%"
+        })
+        query = query + `&titleStartsWith=%${nuevoFiltro}`
+      }
       try{
-        const response = await fetch(`${URI}${apiKey}&limit=40&orderBy=onsaleDate`, options)
+        const response = await fetch(`${URI}${apiKey}${query}&orderBy=onsaleDate`, options)
         const result = await response.json()
         setComics(result.data.results)
         console.log("Comics: ",result.data.results)
@@ -37,13 +51,32 @@ const useComics = (URI) => {
     }
 
     fetchData()
-  },[])
+  },[
+    URI,
+    history
+  ])
 
   return [{ comics, comicsLoading, comicsError }]
 }
 
 const RowComicsList = props => {
-  const { comic } = props
+  const { comic, setComicFavorito } = props
+  const [favorito, setFavorito] = useState(false)
+
+  //Defino si es favorito o no segun local storage
+  useEffect(()=>{
+    const favoritos = JSON.parse(localStorage.getItem('comicsFavoritos'))
+    const favorito = favoritos ? favoritos.find(favorito => favorito === comic.id) : ''
+    if(favorito){
+      setFavorito(true)
+    }
+    return () => setFavorito(false)
+  },[
+    localStorage,
+    comic.id,
+    favorito
+  ])
+
   let URLImage = ''
   if(comic.images){
     if(comic.images.length > 0){
@@ -62,7 +95,14 @@ const RowComicsList = props => {
         <div className="d-flex align-items-center">
           <span className="mr-2 titulo-comic"
             >{comic.title}</span>
-          <img className="favorito" src={StarBorderGrey} alt="Favorito" />
+          <img className="favorito" 
+            src={favorito ? StarGrey : StarBorderGrey}
+            alt="Favorito"
+            onClick={()=>{
+              setComicFavorito(comic.id, !favorito)
+              setFavorito(!favorito)
+            }}
+            />
         </div>
         <div className="comic-description">{comic.description}</div>
       </div>
@@ -71,14 +111,14 @@ const RowComicsList = props => {
 }
 
 const ComicsList = props => {
-  const { comics, comicsLoading, comicsError } = props
+  const { comics, comicsLoading, comicsError, setComicFavorito } = props
   return(
     <div className="comics-list">
       {comicsLoading && <Spinner />}
       {comicsError && <Error message="Error al cargar los comics" />}
       {comics.length > 0 ?(
         comics.map((comic, i)=>{
-          return <RowComicsList key={i} comic={comic} />
+          return <RowComicsList key={i} comic={comic} setComicFavorito={setComicFavorito} />
         })
       ) : (
         !comicsLoading && !comicsError &&
@@ -89,8 +129,8 @@ const ComicsList = props => {
 }
 
 const ComicsModal = props => {
-  const { selectedCharacter } = props
-  const [{ comics, comicsLoading, comicsError }] = useComics(selectedCharacter.URI)
+  const { selectedCharacter, history, setComicFavorito } = props
+  const [{ comics, comicsLoading, comicsError }] = useComics(selectedCharacter.URI, history)
 
   return(
     <div className="comics-modal">
@@ -99,6 +139,7 @@ const ComicsModal = props => {
         comics={comics}
         comicsLoading={comicsLoading}
         comicsError={comicsError}
+        setComicFavorito={setComicFavorito}
         />
     </div>
   )

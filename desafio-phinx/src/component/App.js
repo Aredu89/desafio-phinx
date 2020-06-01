@@ -10,7 +10,7 @@ import ComicsModal from './ComicsModal.js'
 import ComicPreview from './ComicPreview.js'
 
 //Hooks para obtener datos
-const useDataMarvel = (history) => {
+const useDataMarvel = (history, filtrarFavoritos) => {
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -41,7 +41,23 @@ const useDataMarvel = (history) => {
       try{
         const response = await fetch(`http://gateway.marvel.com/v1/public/characters${apiKey}${query}&limit=40&orderBy=modified`, options)
         const result = await response.json()
-        setData(result.data.results)
+        if(filtrarFavoritos){
+          const favoritos = JSON.parse(localStorage.getItem('personajesFavoritos'))
+          if(favoritos){
+            let dataAux = []
+            result.data.results.forEach(item=>{
+              const dato = favoritos.find(fav => fav === item.id)
+              if(dato){
+                dataAux.push(item)
+              }
+            })
+            setData(dataAux)
+          } else {
+            setData(result.data.results)
+          }
+        } else {
+          setData(result.data.results)
+        }
       } catch {
         setIsError(true)
       }
@@ -50,7 +66,8 @@ const useDataMarvel = (history) => {
 
     fetchData()
   },[
-    history.location.search
+    history.location.search,
+    filtrarFavoritos
   ])
 
   return [{ data, isLoading, isError }]
@@ -58,7 +75,8 @@ const useDataMarvel = (history) => {
 
 const App = props => {
   const [nameFilter, setNameFilter] = useState('')
-  const [{ data, isLoading, isError }] = useDataMarvel(props.history)
+  const [filtrarFavoritos, setFiltrarFavoritos] = useState(false)
+  const [{ data, isLoading, isError }] = useDataMarvel(props.history, filtrarFavoritos)
   const [selectedCharacter, setSelectedCharacter] = useState({})
   const [comicPreview, setComicPreview] = useState(false)
   const [idComicPreview, setIdComicPreview] = useState()
@@ -141,12 +159,54 @@ const App = props => {
     setSelectedCharacter({})
   }
 
+  const setPersonajeFavorito = (id, favorito) => {
+    let array = []
+    const persFav = localStorage.getItem('personajesFavoritos')
+    if(persFav){
+      array = JSON.parse(persFav)
+    }
+    if(favorito){
+      array.push(id)
+    } else {
+      let arrayAux = []
+      array.forEach((fav, i)=>{
+        if(fav !== id){
+          arrayAux.push(fav)
+        }
+      })
+      array = arrayAux
+    }
+    localStorage.setItem('personajesFavoritos', JSON.stringify(array))
+  }
+
+  const setComicFavorito = (id, favorito) => {
+    let array = []
+    const comicsFav = localStorage.getItem('comicsFavoritos')
+    if(comicsFav){
+      array = JSON.parse(comicsFav)
+    }
+    if(favorito){
+      array.push(id)
+    } else {
+      let arrayAux = []
+      array.forEach((fav, i)=>{
+        if(fav !== id){
+          arrayAux.push(fav)
+        }
+      })
+      array = arrayAux
+    }
+    localStorage.setItem('comicsFavoritos', JSON.stringify(array))
+  }
+
   return (
     <div className="App">
       <Header
         onFilterEnter={handleOnFilterEnter}
         onFilterChange={handleOnFilterChange}
         filterValue={nameFilter}
+        filtrarFavoritos={filtrarFavoritos}
+        setFiltrarFavoritos={setFiltrarFavoritos}
         />
       {
         comicPreview ? (
@@ -160,6 +220,7 @@ const App = props => {
           isLoading={isLoading}
           isError={isError}
           selectCharacter={selectCharacter}
+          setPersonajeFavorito={setPersonajeFavorito}
           />
         )
       }
@@ -173,6 +234,8 @@ const App = props => {
         >
           <ComicsModal
             selectedCharacter={selectedCharacter}
+            history={props.history}
+            setComicFavorito={setComicFavorito}
             />
       </Modal>
     </div>

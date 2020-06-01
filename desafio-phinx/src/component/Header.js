@@ -3,9 +3,9 @@ import './Header.css';
 
 //Imágenes
 import Logo from '../images/marvel-logo.png'
-import Star from '../images/icons/star.svg'
 import Search from '../images/icons/search_grey.svg'
 import StarBorder from '../images/icons/star_outline_grey.svg'
+import StarGrey from '../images/icons/star_grey.svg'
 
 const MarvelIcon = props => {
   return(
@@ -16,7 +16,7 @@ const MarvelIcon = props => {
 }
 
 const InputBuscador = props => {
-  const { onFilterEnter, onFilterChange, filterValue } = props
+  const { onFilterEnter, onFilterChange, filterValue, filtrarFavoritos, setFiltrarFavoritos } = props
 
   return(
     <div className="input-buscador d-flex justify-content-between">
@@ -31,13 +31,17 @@ const InputBuscador = props => {
           placeholder="Buscar"
         />
       </div>
-      <img className="favoritos" src={StarBorder} alt="Favoritos" />
+      <img className="favoritos"
+        src={filtrarFavoritos ? StarGrey : StarBorder}
+        alt="Favoritos"
+        onClick={()=>setFiltrarFavoritos(!filtrarFavoritos)}
+        />
     </div>
   )
 }
 
 const Header = props => {
-  const { onFilterEnter, onFilterChange, filterValue } = props
+  const { onFilterEnter, onFilterChange, filterValue, filtrarFavoritos, setFiltrarFavoritos } = props
   return(
     <div>
       <div className="header d-flex align-items-center row">
@@ -49,11 +53,10 @@ const Header = props => {
             onFilterEnter={onFilterEnter}
             onFilterChange={onFilterChange}
             filterValue={filterValue}
+            filtrarFavoritos={filtrarFavoritos}
+            setFiltrarFavoritos={setFiltrarFavoritos}
             />
         </div>
-      </div>
-      <div className="container">
-        {props.children}
       </div>
     </div>
     
