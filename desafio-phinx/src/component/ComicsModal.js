@@ -43,7 +43,7 @@ const useComics = (URI) => {
 }
 
 const RowComicsList = props => {
-  const { comic, onSelectComic } = props
+  const { comic } = props
   let URLImage = ''
   if(comic.images){
     if(comic.images.length > 0){
@@ -61,7 +61,6 @@ const RowComicsList = props => {
       <div className="container-description">
         <div className="d-flex align-items-center">
           <span className="mr-2 titulo-comic"
-            onClick={()=>onSelectComic(comic.title)}
             >{comic.title}</span>
           <img className="favorito" src={StarBorderGrey} alt="Favorito" />
         </div>
@@ -72,17 +71,17 @@ const RowComicsList = props => {
 }
 
 const ComicsList = props => {
-  const { comics, comicsLoading, comicsError, onSelectComic } = props
+  const { comics, comicsLoading, comicsError } = props
   return(
     <div className="comics-list">
       {comicsLoading && <Spinner />}
       {comicsError && <Error message="Error al cargar los comics" />}
       {comics.length > 0 ?(
         comics.map((comic, i)=>{
-          return <RowComicsList key={i} comic={comic} onSelectComic={onSelectComic} />
+          return <RowComicsList key={i} comic={comic} />
         })
       ) : (
-        !comicsLoading &&
+        !comicsLoading && !comicsError &&
         <div className="w-100 text-center">No hay resultados...</div>
       )}
     </div>
@@ -90,7 +89,7 @@ const ComicsList = props => {
 }
 
 const ComicsModal = props => {
-  const { selectedCharacter, onSelectComic } = props
+  const { selectedCharacter } = props
   const [{ comics, comicsLoading, comicsError }] = useComics(selectedCharacter.URI)
 
   return(
@@ -100,7 +99,6 @@ const ComicsModal = props => {
         comics={comics}
         comicsLoading={comicsLoading}
         comicsError={comicsError}
-        onSelectComic={onSelectComic}
         />
     </div>
   )

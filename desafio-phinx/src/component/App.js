@@ -7,6 +7,7 @@ import 'react-responsive-modal/styles.css';
 import Header from './Header.js'
 import Lista from './Lista.js'
 import ComicsModal from './ComicsModal.js'
+import ComicPreview from './ComicPreview.js'
 
 //Hooks para obtener datos
 const useDataMarvel = (history) => {
@@ -31,11 +32,11 @@ const useDataMarvel = (history) => {
       if(filtroName){
         //Reemplazo los espacios con %
         const arraySplit = filtroName.split(' ')
-        let nuevoFiltro = ''
+        let nuevoFiltroName = ''
         arraySplit.forEach(word=>{
-          nuevoFiltro = nuevoFiltro + word + "%"
+          nuevoFiltroName = nuevoFiltroName + word + "%"
         })
-        query = query + `&nameStartsWith=%${nuevoFiltro}`
+        query = query + `&nameStartsWith=%${nuevoFiltroName}`
       }
       try{
         const response = await fetch(`http://gateway.marvel.com/v1/public/characters${apiKey}${query}&limit=40&orderBy=modified`, options)
@@ -59,6 +60,9 @@ const App = props => {
   const [nameFilter, setNameFilter] = useState('')
   const [{ data, isLoading, isError }] = useDataMarvel(props.history)
   const [selectedCharacter, setSelectedCharacter] = useState({})
+  const [comicPreview, setComicPreview] = useState(false)
+  const [idComicPreview, setIdComicPreview] = useState()
+  const [errorComicPreview, setErrorComicPreview] = useState(false)
 
   //Asigno un character en queryString aleatoreamente
   useEffect(()=>{
@@ -77,7 +81,46 @@ const App = props => {
 
   const handleOnFilterEnter = event => {
     if(event.key === 'Enter'){
-      props.history.push(props.history.location.pathname + `?character=${event.target.value}`)
+      const value = event.target.value
+      if(value.substring(0,4) === 'http'){
+        setComicPreview(true)
+        let urlCorrecta = true
+        //Busco el comic con el ID en la URL
+        const splitURL = value.split('/')
+        //Controlo que la URL sea correcta
+        splitURL.forEach((part, i)=>{
+          if(i === 2){
+            if(part !== "www.marvel.com"){
+              urlCorrecta = false
+            }
+          }
+          if(i === 3){
+            if(part !== "comics"){
+              urlCorrecta = false
+            }
+          }
+          if(i === 4){
+            if(part !== "issue"){
+              urlCorrecta = false
+            }
+          }
+          if(i === 5){
+            if(isNaN(Number(part))){
+              urlCorrecta = false
+            }
+          }
+        })
+        if(urlCorrecta){
+          setErrorComicPreview(false)
+          setIdComicPreview(splitURL[5])
+        } else {
+          setIdComicPreview('')
+          setErrorComicPreview(true)
+        }
+      } else {
+        setComicPreview(false)
+        props.history.push(props.history.location.pathname + `?character=${value}`)
+      }
     }
   }
 
@@ -98,14 +141,6 @@ const App = props => {
     setSelectedCharacter({})
   }
 
-  const handleOnSelectComic = (title) => {
-    props.history.push(props.history.location.pathname + 
-      props.history.location.search +
-      `&comic=${title}`
-      )
-    onCloseModal()
-  }
-
   return (
     <div className="App">
       <Header
@@ -113,12 +148,21 @@ const App = props => {
         onFilterChange={handleOnFilterChange}
         filterValue={nameFilter}
         />
-      <Lista
-        data={data}
-        isLoading={isLoading}
-        isError={isError}
-        selectCharacter={selectCharacter}
-        />
+      {
+        comicPreview ? (
+          <ComicPreview
+            idComicPreview={idComicPreview}
+            error={errorComicPreview}
+            />
+        ) : (
+        <Lista
+          data={data}
+          isLoading={isLoading}
+          isError={isError}
+          selectCharacter={selectCharacter}
+          />
+        )
+      }
       {/* Modal de comics */}
       <Modal
         classNames={{modal: ['modal-custom'], closeButton: ['modal-custom-button']}}
@@ -129,7 +173,6 @@ const App = props => {
         >
           <ComicsModal
             selectedCharacter={selectedCharacter}
-            onSelectComic={handleOnSelectComic}
             />
       </Modal>
     </div>

@@ -20,7 +20,7 @@ const Lista = props =>{
             </div>
           })
         ) : (
-          !isLoading &&
+          !isLoading && !isError &&
           <div className="w-100 text-center">No hay resultados...</div>
         )
       }
