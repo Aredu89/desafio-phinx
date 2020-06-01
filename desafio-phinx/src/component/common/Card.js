@@ -17,7 +17,6 @@ const Card = props => {
     }
     return () => setFavorito(false)
   },[
-    localStorage,
     character.id,
     favorito
   ])

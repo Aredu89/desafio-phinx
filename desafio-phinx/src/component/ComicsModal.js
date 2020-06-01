@@ -72,7 +72,6 @@ const RowComicsList = props => {
     }
     return () => setFavorito(false)
   },[
-    localStorage,
     comic.id,
     favorito
   ])
