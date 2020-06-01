@@ -3,6 +3,7 @@ import './Lista.css';
 
 //Componentes
 import Spinner from './common/Spinner.js'
+import Error from './common/Error.js'
 import Card from './common/Card.js'
 
 const Lista = props =>{
@@ -10,6 +11,7 @@ const Lista = props =>{
   return(
     <div className="lista row">
       {isLoading && <Spinner />}
+      {isError && <Error message="Error al cargar la lista" />}
       {
         data.length > 0 ? (
           data.map((character, i)=>{

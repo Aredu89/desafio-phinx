@@ -98,6 +98,14 @@ const App = props => {
     setSelectedCharacter({})
   }
 
+  const handleOnSelectComic = (title) => {
+    props.history.push(props.history.location.pathname + 
+      props.history.location.search +
+      `&comic=${title}`
+      )
+    onCloseModal()
+  }
+
   return (
     <div className="App">
       <Header
@@ -121,6 +129,7 @@ const App = props => {
         >
           <ComicsModal
             selectedCharacter={selectedCharacter}
+            onSelectComic={handleOnSelectComic}
             />
       </Modal>
     </div>

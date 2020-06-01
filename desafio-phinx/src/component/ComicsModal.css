@@ -1,6 +1,46 @@
+.comics-modal{
+  color: #646464;
+}
 .comics-modal .titulo{
   font-size: 20px;
   font-weight: 700;
-  color: #646464;
   margin-bottom: 20px;
+}
+.comics-list{
+  max-height: 400px;
+  overflow-y: scroll;
+}
+.comics-list::-webkit-scrollbar{
+  width: 5px;
+  border-radius: 4px;
+}
+.comics-list::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.comics-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.row-comics-list .image{
+  height: 80px;
+  width: 80px;
+  margin-right: 10px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 3px;
+}
+.row-comics-list .container-description{
+  font-size: 14px;
+  max-width: 290px;
+  max-height: 90px;
+  white-space: pre-line;
+  overflow: hidden;
+}
+.row-comics-list .titulo-comic{
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+}
+.row-comics-list .favorito{
+  cursor: pointer;
 }
