@@ -29,7 +29,6 @@ const useComics = (URI, history) => {
       let query = ''
       const search = new URLSearchParams(history.location.search)
       const filtroComic = search.get('comic')
-      console.log("Filtro comic: ",filtroComic)
       if(filtroComic){
         //Reemplazo los espacios con %
         const arraySplit = filtroComic.split(' ')
@@ -43,7 +42,6 @@ const useComics = (URI, history) => {
         const response = await fetch(`${URI}${apiKey}${query}&orderBy=onsaleDate`, options)
         const result = await response.json()
         setComics(result.data.results)
-        console.log("Comics: ",result.data.results)
       } catch {
         setComicsError(true)
       }

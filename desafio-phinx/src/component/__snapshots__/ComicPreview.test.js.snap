@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ComicPreview Debería renderizar bien con error e id por props 1`] = `
+<div
+  className="comic-preview"
+>
+  <div
+    className="text-center"
+  >
+    La URL ingresada es incorrecta
+  </div>
+</div>
+`;
+
+exports[`ComicPreview Debería renderizar bien con id de comic por props 1`] = `
+<div
+  className="comic-preview"
+>
+  <div
+    className="text-center"
+  >
+    No hay información para la vista previa
+  </div>
+</div>
+`;
+
+exports[`ComicPreview Debería renderizar bien sin props 1`] = `
+<div
+  className="comic-preview"
+>
+  <div
+    className="text-center"
+  >
+    No hay información para la vista previa
+  </div>
+</div>
+`;
