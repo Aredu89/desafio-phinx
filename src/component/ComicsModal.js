@@ -31,12 +31,8 @@ const useComics = (URI, history) => {
       const filtroComic = search.get('comic')
       if(filtroComic){
         //Reemplazo los espacios con %
-        const arraySplit = filtroComic.split(' ')
-        let nuevoFiltro = ''
-        arraySplit.forEach(word=>{
-          nuevoFiltro = nuevoFiltro + word + "%"
-        })
-        query = query + `&titleStartsWith=%${nuevoFiltro}`
+        const replacedComic = filtroComic.replace(' ', '%')
+        query = query + `&titleStartsWith=%${filtroComic.toString()}`
       }
       try{
         const response = await fetch(`https${URI.substring(4)}${apiKey}${query}&orderBy=onsaleDate`, options)

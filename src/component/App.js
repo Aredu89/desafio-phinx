@@ -31,12 +31,8 @@ const useDataMarvel = (history, filtrarFavoritos) => {
       const filtroName = search.get('character')
       if(filtroName){
         //Reemplazo los espacios con %
-        const arraySplit = filtroName.split(' ')
-        let nuevoFiltroName = ''
-        arraySplit.forEach(word=>{
-          nuevoFiltroName = nuevoFiltroName + word + "%"
-        })
-        query = query + `&nameStartsWith=%${nuevoFiltroName}`
+        const replacedName = filtroName.replace(' ', '%')
+        query = query + `&nameStartsWith=%${replacedName}`
       }
       try{
         const response = await fetch(`https://gateway.marvel.com/v1/public/characters${apiKey}${query}&limit=40&orderBy=modified`, options)
