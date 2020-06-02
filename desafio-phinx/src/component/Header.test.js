@@ -21,7 +21,7 @@ describe('Header', () => {
   it('OnChange del input',()=>{
     component
       .find('input.input')
-      .simulate('change', {
+      .prop('onChange')({
         target:{
           value: 'spider'
         }
