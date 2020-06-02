@@ -43,7 +43,6 @@ const useComics = (URI, history) => {
       }
       setComicsLoading(false)
     }
-
     fetchData()
   },[
     URI,
@@ -131,7 +130,7 @@ const ComicsModal = props => {
       <ComicsList
         comics={comics}
         comicsLoading={comicsLoading}
-        comicsError={comicsError}
+        comicsError={comicsError && selectedCharacter.URI ? true : false}
         setComicFavorito={setComicFavorito}
         />
     </div>
