@@ -54,7 +54,7 @@ const useComics = (URI, history) => {
     history
   ])
 
-  return [{ comics, comicsLoading, comicsError }]
+  return { comics, comicsLoading, comicsError }
 }
 
 const RowComicsList = props => {
@@ -127,7 +127,7 @@ const ComicsList = props => {
 
 const ComicsModal = props => {
   const { selectedCharacter, history, setComicFavorito } = props
-  const [{ comics, comicsLoading, comicsError }] = useComics(selectedCharacter.URI, history)
+  const { comics, comicsLoading, comicsError } = useComics(selectedCharacter.URI, history)
 
   return(
     <div className="comics-modal">

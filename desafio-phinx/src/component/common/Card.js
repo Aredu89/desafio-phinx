@@ -21,12 +21,15 @@ const Card = props => {
     favorito
   ])
 
+  const path = character.thumbnail ? character.thumbnail.path : ''
+  const extension = character.thumbnail ? character.thumbnail.extension : ''
+
   return(
     <div className="card">
       <div 
         className="image"
         style={{
-          backgroundImage: `url("${character.thumbnail.path}.${character.thumbnail.extension}")`
+          backgroundImage: `url("${path}.${extension}")`
         }}
         >
         <img className="favorito"

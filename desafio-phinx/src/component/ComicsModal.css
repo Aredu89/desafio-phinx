@@ -31,7 +31,7 @@
 }
 .row-comics-list .container-description{
   font-size: 14px;
-  max-width: 290px;
+  max-width: 75%;
   max-height: 90px;
   white-space: pre-line;
   overflow: hidden;

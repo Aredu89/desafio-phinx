@@ -70,13 +70,13 @@ const useDataMarvel = (history, filtrarFavoritos) => {
     filtrarFavoritos
   ])
 
-  return [{ data, isLoading, isError }]
+  return { data, isLoading, isError }
 }
 
 const App = props => {
   const [nameFilter, setNameFilter] = useState('')
   const [filtrarFavoritos, setFiltrarFavoritos] = useState(false)
-  const [{ data, isLoading, isError }] = useDataMarvel(props.history, filtrarFavoritos)
+  const { data, isLoading, isError } = useDataMarvel(props.history, filtrarFavoritos)
   const [selectedCharacter, setSelectedCharacter] = useState({})
   const [comicPreview, setComicPreview] = useState(false)
   const [idComicPreview, setIdComicPreview] = useState()

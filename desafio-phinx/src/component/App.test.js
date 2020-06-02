@@ -70,4 +70,7 @@ describe('App', () => {
     })
     expect(component.find('ComicPreview').length).toEqual(1)
   })
+  it('Modal cerrado', () => {
+    expect(component.find('Modal').prop('open')).toEqual(false)
+  })
 });
