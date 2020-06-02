@@ -39,7 +39,7 @@ const useDataMarvel = (history, filtrarFavoritos) => {
         query = query + `&nameStartsWith=%${nuevoFiltroName}`
       }
       try{
-        const response = await fetch(`http://gateway.marvel.com/v1/public/characters${apiKey}${query}&limit=40&orderBy=modified`, options)
+        const response = await fetch(`https://gateway.marvel.com/v1/public/characters${apiKey}${query}&limit=40&orderBy=modified`, options)
         const result = await response.json()
         if(filtrarFavoritos){
           const favoritos = JSON.parse(localStorage.getItem('personajesFavoritos'))

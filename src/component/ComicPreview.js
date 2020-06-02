@@ -23,7 +23,7 @@ const useDataComic = (id) => {
       }
       const apiKey = "?ts=1&apikey=559d5acc5e36c6f7495c9ef2fbf86fda"
       try{
-        const response = await fetch(`http://gateway.marvel.com/v1/public/comics/${id}${apiKey}`, options)
+        const response = await fetch(`https://gateway.marvel.com/v1/public/comics/${id}${apiKey}`, options)
         const result = await response.json()
         console.log("Result comic: ",result.data.results[0])
         setData(result.data.results[0])

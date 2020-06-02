@@ -39,7 +39,7 @@ const useComics = (URI, history) => {
         query = query + `&titleStartsWith=%${nuevoFiltro}`
       }
       try{
-        const response = await fetch(`${URI}${apiKey}${query}&orderBy=onsaleDate`, options)
+        const response = await fetch(`https${URI.substring(4)}${apiKey}${query}&orderBy=onsaleDate`, options)
         const result = await response.json()
         setComics(result.data.results)
       } catch {
