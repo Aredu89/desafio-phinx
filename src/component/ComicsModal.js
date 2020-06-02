@@ -31,7 +31,11 @@ const useComics = (URI, history) => {
       const filtroComic = search.get('comic')
       if(filtroComic){
         //Reemplazo los espacios con %
-        const replacedComic = filtroComic.replace(' ', '%')
+        const array = filtroComic.split(' ')
+        const replacedComic = ''
+        array.forEach(word=>{
+          replacedComic = replacedComic + word + "%"
+        })
         query = query + `&titleStartsWith=%${filtroComic.toString()}`
       }
       try{

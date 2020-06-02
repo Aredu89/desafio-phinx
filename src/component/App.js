@@ -31,7 +31,11 @@ const useDataMarvel = (history, filtrarFavoritos) => {
       const filtroName = search.get('character')
       if(filtroName){
         //Reemplazo los espacios con %
-        const replacedName = filtroName.replace(' ', '%')
+        const array = filtroName.split(' ')
+        let replacedName = ''
+        array.forEach(word=>{
+          replacedName = replacedName + word + "%"
+        })
         query = query + `&nameStartsWith=%${replacedName}`
       }
       try{
@@ -49,7 +53,7 @@ const useDataMarvel = (history, filtrarFavoritos) => {
             })
             setData(dataAux)
           } else {
-            setData(result.data.results)
+            setData([])
           }
         } else {
           setData(result.data.results)
