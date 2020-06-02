@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Render 1`] = `
+<Header
+  filterValue="spider"
+  onFilterChange={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "target": Object {
+              "value": "spider",
+            },
+          },
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+  setFiltrarFavoritos={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          true,
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+>
+  <div>
+    <div
+      className="header d-flex align-items-center row"
+    >
+      <div
+        className="col-2 col-md-1 icon-container"
+      >
+        <MarvelIcon>
+          <div
+            className="marvel-icon"
+          >
+            <img
+              alt="Marvel Logo"
+              src="marvel-logo.png"
+            />
+          </div>
+        </MarvelIcon>
+      </div>
+      <div
+        className="col-10 input-container"
+      >
+        <InputBuscador
+          filterValue="spider"
+          onFilterChange={
+            [MockFunction] {
+              "calls": Array [
+                Array [
+                  Object {
+                    "target": Object {
+                      "value": "spider",
+                    },
+                  },
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "type": "return",
+                  "value": undefined,
+                },
+              ],
+            }
+          }
+          setFiltrarFavoritos={
+            [MockFunction] {
+              "calls": Array [
+                Array [
+                  true,
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "type": "return",
+                  "value": undefined,
+                },
+              ],
+            }
+          }
+        >
+          <div
+            className="input-buscador d-flex justify-content-between"
+          >
+            <div
+              className="w-100"
+            >
+              <img
+                alt=""
+                className="mr-2"
+                src="search_grey.svg"
+              />
+              <input
+                className="input"
+                name="busqueda"
+                onChange={
+                  [MockFunction] {
+                    "calls": Array [
+                      Array [
+                        Object {
+                          "target": Object {
+                            "value": "spider",
+                          },
+                        },
+                      ],
+                    ],
+                    "results": Array [
+                      Object {
+                        "type": "return",
+                        "value": undefined,
+                      },
+                    ],
+                  }
+                }
+                placeholder="Buscar"
+                value="spider"
+              />
+            </div>
+            <img
+              alt="Favoritos"
+              className="favoritos"
+              onClick={[Function]}
+              src="star_outline_grey.svg"
+            />
+          </div>
+        </InputBuscador>
+      </div>
+    </div>
+  </div>
+</Header>
+`;
